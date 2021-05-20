@@ -9,15 +9,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="pinch-zoom.js"></script>
-<link type="text/css" rel="Stylesheet" href="maps.css">
 
 <style>
+  .map-img {
+    position: relative;
+  }
   #raz {
+  position: relative;
   overflow: auto;  /* полоса прокрутки */ 
-  width: 90vw;
-  max-width: 400px;
-  height: 80vh;
-  max-height: 400px;
+  width: 100%;
+  height: 300px;
   margin:0 auto;
   -webkit-user-select: none; user-select: none;  /* убрать выделение элемента */ 
 }
@@ -28,22 +29,50 @@
 #raz::-webkit-scrollbar {  /* спрятать полосу прокрутки в Chrome */ 
   display: none; 
 }
+.map-zoom--btn {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+}
+.map-zoom {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 0;
+  border: none;
+  background-color: #fff;
+  color: #222;
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+  opacity: .8;
+}
+#images {
+  width: 100%;
+  min-height: 300px;
+}
 </style>
 </head>
 <body>
 
-<div id="raz">
-  <div class="pinch-content">
-    <img src="karta.jpg" id="images" />
+  <div class="map-img">
+    <div id="raz">
+      <div class="pinch-content">
+        <img src="karta.jpg" id="images" />
+      </div>
+    </div>
+    <div class="map-zoom--btn">
+      <!--<input type="button" onclick="PozP(120,0);" value="Сдвиг на 120вправо"/>
+    <input type="button" onclick="PozL(120,0);" value="Сдвиг на 120 влево"/>-->
+    <input type="button" onclick="Plus();" value="+"/ class="map-zoom">
+    <input type="button" onclick="Minus();" value="-"/ class="map-zoom">
+
+    <input type="hidden" name="sc" id="sc" value="1"/>
+    </div>
   </div>
-</div>
-
-<!--<input type="button" onclick="PozP(120,0);" value="Сдвиг на 120вправо"/>
-<input type="button" onclick="PozL(120,0);" value="Сдвиг на 120 влево"/>-->
-<input type="button" onclick="Plus();" value="Увеличить"/>
-<input type="button" onclick="Minus();" value="Уменьшить"/>
-
-<input type="hidden" name="sc" id="sc" value="1"/>
 
 <script>
 var block = document.getElementById('images');
