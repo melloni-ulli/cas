@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0,initial-scale=1.0, user-scalable=no">
+<title>Карта квестов</title>
+<meta name="Description" content="" />
+<meta name="keywords" content="" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="pinch-zoom.js"></script>
+<link type="text/css" rel="Stylesheet" href="maps.css">
+
+<style>
+  #raz {
+  overflow: auto;  /* полоса прокрутки */ 
+  width: 90vw;
+  max-width: 400px;
+  height: 80vh;
+  max-height: 400px;
+  margin:0 auto;
+  -webkit-user-select: none; user-select: none;  /* убрать выделение элемента */ 
+}
+#raz:active {  /* вид курсора CSS */ 
+  cursor: pointer;
+  cursor: grabbing;
+}
+#raz::-webkit-scrollbar {  /* спрятать полосу прокрутки в Chrome */ 
+  display: none; 
+}
+</style>
+</head>
+<body>
+
+<div id="raz">
+  <div class="pinch-content">
+    <img src="karta.jpg" id="images" />
+  </div>
+</div>
+
+<!--<input type="button" onclick="PozP(120,0);" value="Сдвиг на 120вправо"/>
+<input type="button" onclick="PozL(120,0);" value="Сдвиг на 120 влево"/>-->
+<input type="button" onclick="Plus();" value="Увеличить"/>
+<input type="button" onclick="Minus();" value="Уменьшить"/>
+
+<input type="hidden" name="sc" id="sc" value="1"/>
+
+<script>
+var block = document.getElementById('images');
+var x = 200;
+
+
+
+function Plus() {
+    var block = document.getElementById('images');
+    var scales =  parseInt(document.getElementById('sc').value);
+    var newscale = scales+1;
+    document.getElementById('sc').value=newscale;
+    block.style.transform = "scale("+newscale+")";
+    return false;
+}
+
+function Minus() {
+    var scales =  parseInt(document.getElementById('sc').value);
+    var block = document.getElementById('images');
+   //alert (scales);
+    if (scales > 1)
+    {
+        var newscale = scales-1;
+        document.getElementById('sc').value=newscale;
+    block.style.transform = "scale("+newscale+")";
+    }
+    return false;
+}
+
+block.onwheel = function(event) {
+        if(event.deltaY < 0 && x < 600){
+        x += 5;
+        this.style.width = x + '%';
+       }
+	   
+      if(event.deltaY > 0 && x > 200){
+        x -= 5;
+        this.style.width = x + '%';
+      }
+    return false;
+}
+
+block.addEventListener('touchmove', function(event) {
+  // Если 1 палец внутри элемента
+  if (event.targetTouches.length == 2) {
+    var touch = event.targetTouches[0];
+    // Place element where the finger is
+    obj.style.left = touch.pageX + 'px';
+    obj.style.top = touch.pageY + 'px';
+  }
+}, false);
+
+
+
+function pppp(event) {
+    var block = document.getElementById('images');
+    block.style.transform = "scale(3)";
+    /*    if(event.deltaY < 0 && x < 600){
+        x += 5;
+        block.style.width = x + '%';
+       }
+	   
+      if(event.deltaY > 0 && x > 200){
+        x -= 5;
+        block.style.width = x + '%';
+      }*/
+    return false;
+}
+
+function PozP(x,y) {
+   var div = document.getElementById('raz');
+	 div.scrollLeft += x;
+     div.scrollTop += y;
+}
+
+function PozL(x,y) {
+   var div = document.getElementById('raz');
+	 div.scrollLeft -= x;
+     div.scrollTop -= y;
+}
+
+
+(function(){
+var div = document.getElementById('raz'),
+    x1 = null, y1 = null, z = false;
+div.addEventListener('mousemove', Raz, false); // событие при движении мышки
+div.addEventListener('click', Raz, false); // событие при клике
+div.addEventListener('mouseup', Raz0, false); // событие с отпущенной клавишей мышки
+div.addEventListener('mouseout', Raz0, false); // событие при выходе за пределы области
+function Raz(e) {
+  if (z == true || e.type == "click") {
+    div.scrollLeft -= e.clientX-x1;
+    div.scrollTop -= e.clientY-y1;
+    
+
+    x1 = e.clientX; 
+    y1 = e.clientY;
+  }  
+}
+
+div.onmousedown = function(e) { // событие с нажатой клавишей мышки
+  var kl = e.keyCode || e.which;
+  if (kl == "1") { // только для левой клавиши мышки
+    z = true;
+    x1 = e.clientX;
+    y1 = e.clientY;
+  }
+}
+function Raz0() {z = false;}
+})()
+
+var image=document.getElementById('images');
+
+image.addEventListener('gesturechange',function(e){
+
+    if(e.scale>1){
+        //zoom in 
+        //increase the size of image according to the e.scale
+    }
+
+    else if(e.scale<1){
+        //zoom out 
+        //decrease the size of image according to the e.scale
+    }
+});
+</script>
+<script type="text/javascript">
+  if ($(window).width() < 600) {
+    var el = document.querySelector('.pinch-content');
+    new PinchZoom.default(el, {});
+  }
+</script>
+</body>
+</html>
